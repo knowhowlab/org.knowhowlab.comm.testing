@@ -37,6 +37,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>javax.comm</groupId>
+            <artifactId>comm</artifactId>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../libs/comm.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
