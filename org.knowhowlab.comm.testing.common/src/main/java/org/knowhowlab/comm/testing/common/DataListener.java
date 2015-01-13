@@ -14,21 +14,11 @@
  * limitations under the License.
  */
 
-package org.knowhowlab.comm.testing.common.config;
+package org.knowhowlab.comm.testing.common;
 
 /**
  * @author dpishchukhin
  */
-public enum PortType {
-    SERIAL(1);//, PARALLEL(2);
-
-    private final int code;
-
-    PortType(int code) {
-        this.code = code;
-    }
-
-    public int getCode() {
-        return code;
-    }
+public interface DataListener {
+    void dataAvailable();
 }

@@ -37,8 +37,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.rxtx</groupId>
-            <artifactId>rxtx</artifactId>
+            <groupId>org.knowhowlab.comm</groupId>
+            <artifactId>org.knowhowlab.comm.testing.common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.knowhowlab.comm</groupId>
+            <artifactId>org.knowhowlab.comm.rxtx-patched</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

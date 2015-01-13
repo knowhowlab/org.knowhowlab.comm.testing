@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-package org.knowhowlab.comm.testing.common.config;
+package org.knowhowlab.comm.testing.common;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PipedOutputStream;
 
 /**
  * @author dpishchukhin
  */
-public enum PortType {
-    SERIAL(1);//, PARALLEL(2);
+public interface Linkable {
+    String getName();
 
-    private final int code;
+    void linkTo(Linkable linkTo) throws IOException;
 
-    PortType(int code) {
-        this.code = code;
-    }
+    InputStream getInputStream() throws IOException;
 
-    public int getCode() {
-        return code;
-    }
+    PipedOutputStream getOutputStream(DataListener listener) throws IOException;
 }
