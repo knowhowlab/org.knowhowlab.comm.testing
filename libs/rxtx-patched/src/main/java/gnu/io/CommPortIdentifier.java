@@ -255,6 +255,18 @@ public class CommPortIdentifier extends Object /* extends Vector? */
 	static public Enumeration getPortIdentifiers() 
 	{ 
 		if(debug) System.out.println("static CommPortIdentifier:getPortIdentifiers()");
+
+		// PATCH
+//		CommPortIndex = null;
+//		try
+//		{
+//			CommDriver RXTXDriver = (CommDriver) Class.forName("gnu.io.RXTXCommDriver").newInstance();
+//			RXTXDriver.initialize();
+//		}
+//		catch (Throwable e)
+//		{
+//			System.err.println(e + " thrown while loading " + "gnu.io.RXTXCommDriver");
+//		}
 		return new CommPortEnumerator();
 	}
 /*------------------------------------------------------------------------------
@@ -296,6 +308,8 @@ public class CommPortIdentifier extends Object /* extends Vector? */
 		if(debug) System.out.println("CommPortIdentifier:open(FileDescriptor)");
 		throw new UnsupportedCommOperationException();
 	}
+	// PATCH
+	//private native String native_psmisc_report_owner(String PortName);
 
 /*------------------------------------------------------------------------------
 	open()
@@ -342,6 +356,9 @@ public class CommPortIdentifier extends Object /* extends Vector? */
 		else
 		{
 			throw new gnu.io.PortInUseException(PortName);
+			// PATCH
+			//throw new gnu.io.PortInUseException(
+			//		native_psmisc_report_owner(PortName));
 		}
 	}
 /*------------------------------------------------------------------------------
