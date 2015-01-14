@@ -384,4 +384,15 @@ public class MockRxTxSerialPort extends SerialPort implements Linkable, DataList
             listener.serialEvent(new SerialPortEvent(this, SerialPortEvent.DATA_AVAILABLE, false, true));
         }
     }
+
+    @Override
+    public void close() {
+        try {
+            this.inputStream.close();
+            this.outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        super.close();
+    }
 }
