@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -44,6 +45,7 @@ public class MockRxTxDriverTest {
 
     @After
     public void after() throws IOException {
+        System.out.println("Device reset");
         driver.reset();
     }
 
@@ -73,10 +75,21 @@ public class MockRxTxDriverTest {
         CommPortIdentifier com1Id = CommPortIdentifier.getPortIdentifier("COM1");
         CommPortIdentifier com2Id = CommPortIdentifier.getPortIdentifier("COM2");
 
-        CommPort com1 = com1Id.open("MyApp", 2000);
+        final CommPort com1 = com1Id.open("MyApp", 2000);
         CommPort com2 = com2Id.open("MyApp", 2000);
 
-        com1.getOutputStream().write("Test".getBytes());
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    com1.getOutputStream().write("Test".getBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        TimeUnit.SECONDS.sleep(1);
         byte[] buff = new byte[32];
         int read = com2.getInputStream().read(buff);
 
@@ -114,7 +127,7 @@ public class MockRxTxDriverTest {
             }
         });
 
-        new Thread(){
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -123,7 +136,7 @@ public class MockRxTxDriverTest {
                     e.printStackTrace();
                 }
             }
-        }.start();
+        });
 
         TimeUnit.SECONDS.sleep(1);
 
