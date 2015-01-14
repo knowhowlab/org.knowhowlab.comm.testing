@@ -45,7 +45,6 @@ public class MockOracleDriverTest {
 
     @After
     public void after() throws IOException {
-        System.out.println("Device reset");
         driver.reset();
     }
 
@@ -108,7 +107,6 @@ public class MockOracleDriverTest {
         final CommPort com1 = com1Id.open("MyApp", 2000);
         final SerialPort com2 = (SerialPort) com2Id.open("MyApp", 2000);
         final StringBuilder data = new StringBuilder();
-
 
         com2.notifyOnDataAvailable(true);
         com2.addEventListener(new SerialPortEventListener() {

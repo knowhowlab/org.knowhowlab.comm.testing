@@ -45,7 +45,6 @@ public class MockRxTxDriverTest {
 
     @After
     public void after() throws IOException {
-        System.out.println("Device reset");
         driver.reset();
     }
 

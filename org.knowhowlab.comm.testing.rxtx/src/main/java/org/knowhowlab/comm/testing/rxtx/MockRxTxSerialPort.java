@@ -279,6 +279,8 @@ public class MockRxTxSerialPort extends SerialPort implements Linkable, DataList
     }
 
     private void resetInternal() throws IOException {
+        notifyOnDataAvailable = false;
+        listener = null;
         inputStream = new PipedInputStream();
         this.inputStream.connect(linkTo.getOutputStream(this));
     }
@@ -383,16 +385,5 @@ public class MockRxTxSerialPort extends SerialPort implements Linkable, DataList
         if (notifyOnDataAvailable && listener != null) {
             listener.serialEvent(new SerialPortEvent(this, SerialPortEvent.DATA_AVAILABLE, false, true));
         }
-    }
-
-    @Override
-    public void close() {
-        try {
-            this.inputStream.close();
-            this.outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        super.close();
     }
 }

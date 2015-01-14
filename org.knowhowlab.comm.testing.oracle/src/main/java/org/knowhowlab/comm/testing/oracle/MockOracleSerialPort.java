@@ -209,6 +209,8 @@ public class MockOracleSerialPort extends SerialPort implements Linkable, DataLi
     }
 
     private void resetInternal() throws IOException {
+        notifyOnDataAvailable = false;
+        listener = null;
         inputStream = new PipedInputStream();
         this.inputStream.connect(linkTo.getOutputStream(this));
     }
@@ -313,16 +315,5 @@ public class MockOracleSerialPort extends SerialPort implements Linkable, DataLi
         if (notifyOnDataAvailable && listener != null) {
             listener.serialEvent(new SerialPortEvent(this, SerialPortEvent.DATA_AVAILABLE, false, true));
         }
-    }
-
-    @Override
-    public void close() {
-        try {
-            this.inputStream.close();
-            this.outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        super.close();
     }
 }
