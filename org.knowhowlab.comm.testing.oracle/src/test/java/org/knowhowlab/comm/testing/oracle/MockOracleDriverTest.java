@@ -16,6 +16,8 @@
 
 package org.knowhowlab.comm.testing.oracle;
 
+import org.junit.After;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.knowhowlab.comm.testing.common.config.DriverConfig;
 import org.knowhowlab.comm.testing.common.config.PortConfig;
@@ -34,11 +36,21 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 public class MockOracleDriverTest {
+    private static MockOracleDriver driver;
+
+    @BeforeClass
+    public static void init() throws IOException {
+        driver = new MockOracleDriver(createConfig());
+        driver.initialize();
+    }
+
+    @After
+    public void after() throws IOException {
+        driver.reset();
+    }
+
     @Test
     public void testInitialize() throws Exception {
-        MockOracleDriver driver = new MockOracleDriver(createConfig());
-        driver.initialize();
-
         Enumeration portIdentifiers = CommPortIdentifier.getPortIdentifiers();
         assertThat(portIdentifiers, notNullValue());
 
@@ -60,9 +72,6 @@ public class MockOracleDriverTest {
 
     @Test
     public void testSimpleDataTransfer() throws Exception {
-        MockOracleDriver driver = new MockOracleDriver(createConfig());
-        driver.initialize();
-
         CommPortIdentifier com1Id = CommPortIdentifier.getPortIdentifier("COM1");
         CommPortIdentifier com2Id = CommPortIdentifier.getPortIdentifier("COM2");
 
@@ -81,9 +90,6 @@ public class MockOracleDriverTest {
 
     @Test
     public void testSimpleDataTransfer_WithNotification() throws Exception {
-        MockOracleDriver driver = new MockOracleDriver(createConfig());
-        driver.initialize();
-
         CommPortIdentifier com1Id = CommPortIdentifier.getPortIdentifier("COM1");
         CommPortIdentifier com2Id = CommPortIdentifier.getPortIdentifier("COM2");
 
@@ -129,7 +135,7 @@ public class MockOracleDriverTest {
         com2.close();
     }
 
-    private DriverConfig createConfig() throws IOException {
+    private static DriverConfig createConfig() throws IOException {
         List<PortConfig> ports = new ArrayList<PortConfig>();
         PortConfig com1 = new PortConfig("COM1", PortType.SERIAL);
         ports.add(com1);

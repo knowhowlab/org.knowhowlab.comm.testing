@@ -17,6 +17,8 @@
 package org.knowhowlab.comm.testing.rxtx;
 
 import gnu.io.*;
+import org.junit.After;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.knowhowlab.comm.testing.common.config.DriverConfig;
 import org.knowhowlab.comm.testing.common.config.PortConfig;
@@ -32,11 +34,21 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 public class MockRxTxDriverTest {
+    private static MockRxTxDriver driver;
+
+    @BeforeClass
+    public static void init() throws IOException {
+        driver = new MockRxTxDriver(createConfig());
+        driver.initialize();
+    }
+
+    @After
+    public void after() throws IOException {
+        driver.reset();
+    }
+
     @Test
     public void testInitialize() throws Exception {
-        MockRxTxDriver driver = new MockRxTxDriver(createConfig());
-        driver.initialize();
-
         Enumeration portIdentifiers = CommPortIdentifier.getPortIdentifiers();
         assertThat(portIdentifiers, notNullValue());
 
@@ -58,9 +70,6 @@ public class MockRxTxDriverTest {
 
     @Test
     public void testSimpleDataTransfer() throws Exception {
-        MockRxTxDriver driver = new MockRxTxDriver(createConfig());
-        driver.initialize();
-
         CommPortIdentifier com1Id = CommPortIdentifier.getPortIdentifier("COM1");
         CommPortIdentifier com2Id = CommPortIdentifier.getPortIdentifier("COM2");
 
@@ -79,9 +88,6 @@ public class MockRxTxDriverTest {
 
     @Test
     public void testSimpleDataTransfer_WithNotification() throws Exception {
-        MockRxTxDriver driver = new MockRxTxDriver(createConfig());
-        driver.initialize();
-
         CommPortIdentifier com1Id = CommPortIdentifier.getPortIdentifier("COM1");
         CommPortIdentifier com2Id = CommPortIdentifier.getPortIdentifier("COM2");
 
@@ -127,7 +133,7 @@ public class MockRxTxDriverTest {
         com2.close();
     }
 
-    private DriverConfig createConfig() throws IOException {
+    private static DriverConfig createConfig() throws IOException {
         List<PortConfig> ports = new ArrayList<PortConfig>();
         PortConfig com1 = new PortConfig("COM1", PortType.SERIAL);
         ports.add(com1);

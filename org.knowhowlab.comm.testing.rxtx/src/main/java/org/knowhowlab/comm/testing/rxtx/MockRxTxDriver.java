@@ -97,4 +97,10 @@ public class MockRxTxDriver implements CommDriver {
     public void setConfig(DriverConfig config) {
         this.config = config;
     }
+
+    public void reset() throws IOException {
+        for (Linkable port : serialPorts) {
+            port.reset();
+        }
+    }
 }

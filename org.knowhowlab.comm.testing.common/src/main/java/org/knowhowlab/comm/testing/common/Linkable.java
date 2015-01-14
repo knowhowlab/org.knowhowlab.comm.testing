@@ -31,4 +31,6 @@ public interface Linkable {
     InputStream getInputStream() throws IOException;
 
     PipedOutputStream getOutputStream(DataListener listener) throws IOException;
+
+    void reset() throws IOException;
 }

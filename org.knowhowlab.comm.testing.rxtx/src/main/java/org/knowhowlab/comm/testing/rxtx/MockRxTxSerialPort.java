@@ -32,12 +32,14 @@ import java.util.TooManyListenersException;
 public class MockRxTxSerialPort extends SerialPort implements Linkable, DataListener {
     private SerialPortEventListener listener;
     private boolean notifyOnDataAvailable = false;
-    private PipedInputStream inputStream = new PipedInputStream();
+    private PipedInputStream inputStream;
     private PipedOutputStream outputStream;
     private boolean connected;
+    private Linkable linkTo;
 
     public MockRxTxSerialPort(String name) {
         this.name = name;
+        inputStream = new PipedInputStream();
     }
 
     @Override
@@ -271,6 +273,17 @@ public class MockRxTxSerialPort extends SerialPort implements Linkable, DataList
     }
 
     @Override
+    public void reset() throws IOException {
+        ((MockRxTxSerialPort)linkTo).resetInternal();
+        linkTo.linkTo(this);
+    }
+
+    private void resetInternal() throws IOException {
+        inputStream = new PipedInputStream();
+        this.inputStream.connect(linkTo.getOutputStream(this));
+    }
+
+    @Override
     public OutputStream getOutputStream() throws IOException {
         return outputStream;
     }
@@ -360,7 +373,8 @@ public class MockRxTxSerialPort extends SerialPort implements Linkable, DataList
         if (!connected) {
             connected = true;
             this.inputStream.connect(linkTo.getOutputStream(this));
-            linkTo.linkTo(this);
+            this.linkTo = linkTo;
+            this.linkTo.linkTo(this);
         }
     }
 
