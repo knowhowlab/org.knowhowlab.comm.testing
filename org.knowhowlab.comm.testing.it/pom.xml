@@ -8,9 +8,8 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.knowhowlab.comm</groupId>
     <artifactId>org.knowhowlab.comm.testing.it</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>KnowHowLab COMM Testing - IT</name>
     <description>KnowHowLab COMM Testing - IT</description>
@@ -35,11 +34,8 @@
         </license>
     </licenses>
 
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>org.knowhowlab.comm.testing.it.standalone.oracle</module>
+        <module>org.knowhowlab.comm.testing.it.standalone.rxtx</module>
+    </modules>
 </project>

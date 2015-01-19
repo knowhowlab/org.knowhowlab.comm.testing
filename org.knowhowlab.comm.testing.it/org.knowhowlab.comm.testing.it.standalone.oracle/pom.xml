@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.knowhowlab.comm</groupId>
+        <artifactId>org.knowhowlab.comm.testing.it</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>org.knowhowlab.comm.testing.it.standalone.oracle</artifactId>
+    <packaging>jar</packaging>
+
+    <name>KnowHowLab COMM Testing - IT - Standalone Oracle</name>
+    <description>KnowHowLab COMM Testing - IT - Standalone Oracle</description>
+    <url>http://knowhowlab.org</url>
+
+    <developers>
+        <developer>
+            <name>Dmytro Pishchukhin</name>
+            <timezone>GMT+1</timezone>
+        </developer>
+    </developers>
+
+    <organization>
+        <name>Know-How Lab</name>
+        <url>http://knowhowlab.org</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax.comm</groupId>
+            <artifactId>comm</artifactId>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../../libs/comm.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.knowhowlab.comm</groupId>
+            <artifactId>org.knowhowlab.comm.testing.oracle</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
