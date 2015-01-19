@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component xmlns="http://www.osgi.org/xmlns/scr/v1.0.0"
+           name="org.knowhowlab.comm.testing.it.osgi.oracle.speedometer.component">
+    <implementation class="org.knowhowlab.comm.testing.it.osgi.oracle.SpeedometerDriver"/>
+</component>
