@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component xmlns="http://www.osgi.org/xmlns/scr/v1.0.0"
-           name="org.knowhowlab.comm.testing.it.osgi.oracle.speedometer.component">
-    <implementation class="org.knowhowlab.comm.testing.it.osgi.oracle.SpeedometerDriver"/>
-</component>
+<components xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+    <scr:component enabled="true" immediate="true" configuration-policy="optional" modified="modified"
+                   name="org.knowhowlab.comm.testing.it.osgi.oracle.speedometer.component">
+        <implementation class="org.knowhowlab.comm.testing.it.osgi.oracle.SpeedometerDriver"/>
+
+        <property name="port" type="String" value="COM1"/>
+        <property name="baudrate" type="Integer" value="9600"/>
+        <property name="databits" type="Integer" value="8"/>
+        <property name="stopbits" type="Integer" value="1"/>
+        <property name="parity" type="Integer" value="0"/>
+    </scr:component>
+</components>
