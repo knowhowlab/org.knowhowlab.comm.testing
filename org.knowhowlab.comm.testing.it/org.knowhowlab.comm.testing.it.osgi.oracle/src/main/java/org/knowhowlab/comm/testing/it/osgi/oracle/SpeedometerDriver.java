@@ -3,20 +3,14 @@ package org.knowhowlab.comm.testing.it.osgi.oracle;
 import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
-import org.osgi.service.wireadmin.Producer;
-import org.osgi.service.wireadmin.Wire;
-import org.osgi.service.wireadmin.WireConstants;
-import org.osgi.util.measurement.Measurement;
-import org.osgi.util.measurement.Unit;
+import org.osgi.service.monitor.Monitorable;
+import org.osgi.service.monitor.StatusVariable;
 
 import javax.comm.*;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.TooManyListenersException;
@@ -28,7 +22,7 @@ import java.util.logging.Logger;
 /**
  * @author dpishchukhin
  */
-public class SpeedometerDriver implements Producer {
+public class SpeedometerDriver implements Monitorable {
     public static final String PRODUCE_PID = "speedometer";
 
     private static final Logger LOG = Logger.getLogger(SpeedometerDriver.class.getName());
@@ -38,6 +32,7 @@ public class SpeedometerDriver implements Producer {
     private static final String DATABITS_CONFIG_PROP = "databits";
     private static final String STOPBITS_CONFIG_PROP = "stopbits";
     private static final String PARITY_CONFIG_PROP = "parity";
+    public static final String SPEED_SV = "speed";
 
     private String port;
     private Integer baudrate;
@@ -48,19 +43,15 @@ public class SpeedometerDriver implements Producer {
     private SerialPort serialPort;
     private SerialPortEventListenerImpl eventListener = new SerialPortEventListenerImpl();
 
-    private Wire[] wires = new Wire[0];
-    private volatile Measurement lastValue;
+    private volatile int speed;
 
     private ServiceRegistration serviceRegistration;
 
     protected void activate(ComponentContext context) {
         // register Producer
-        serviceRegistration = context.getBundleContext().registerService(Producer.class.getName(), this,
+        serviceRegistration = context.getBundleContext().registerService(Monitorable.class.getName(), this,
                 new Hashtable<String, Object>() {{
                     put(Constants.SERVICE_PID, PRODUCE_PID);
-                    put(WireConstants.WIREADMIN_PRODUCER_FLAVORS, new Class[]{
-                            Measurement.class
-                    });
                 }}
         );
 
@@ -187,17 +178,41 @@ public class SpeedometerDriver implements Producer {
     }
 
     @Override
-    public Object polled(Wire wire) {
-        return lastValue;
+    public String[] getStatusVariableNames() {
+        return new String[] {SPEED_SV};
     }
 
     @Override
-    public synchronized void consumersConnected(Wire[] wires) {
-        if (wires != null) {
-            this.wires = Arrays.copyOf(wires, wires.length);
-        } else {
-            this.wires = new Wire[0];
+    public StatusVariable getStatusVariable(String s) throws IllegalArgumentException {
+        if (SPEED_SV.equals(s)) {
+            return new StatusVariable(SPEED_SV, StatusVariable.CM_SI, speed);
         }
+        throw new IllegalArgumentException(String.format("Illegal variable name %s", s));
+    }
+
+    @Override
+    public boolean notifiesOnChange(String s) throws IllegalArgumentException {
+        if (SPEED_SV.equals(s)) {
+            return false;
+        }
+        throw new IllegalArgumentException(String.format("Illegal variable name %s", s));
+    }
+
+    @Override
+    public boolean resetStatusVariable(String s) throws IllegalArgumentException {
+        if (SPEED_SV.equals(s)) {
+            speed = -1;
+            return true;
+        }
+        throw new IllegalArgumentException(String.format("Illegal variable name %s", s));
+    }
+
+    @Override
+    public String getDescription(String s) throws IllegalArgumentException {
+        if (SPEED_SV.equals(s)) {
+            return "Speedometer value";
+        }
+        throw new IllegalArgumentException(String.format("Illegal variable name %s", s));
     }
 
     private class SerialPortEventListenerImpl implements SerialPortEventListener {
@@ -221,12 +236,7 @@ public class SpeedometerDriver implements Producer {
                                     case '\n':
                                         String commandStr = buff.toString().trim();
                                         if (!commandStr.isEmpty()) {
-                                            double value = convertToMetersPerSecond(parseValue(commandStr.trim()));
-                                            if (!Double.isNaN(value)) {
-                                                lastValue = new Measurement(value, Unit.m_s);
-                                                // notify wires
-                                                notifyWires();
-                                            }
+                                            speed = parseValue(commandStr.trim());
                                         }
                                         buff.delete(0, buff.length());
                                         break;
@@ -246,30 +256,11 @@ public class SpeedometerDriver implements Producer {
         }
     }
 
-    private synchronized void notifyWires() {
-        if (wires != null) {
-            for (Wire wire : wires) {
-                wire.update(lastValue);
-            }
-        }
-    }
-
-    private double convertToMetersPerSecond(double kmPerHour) {
-        if (Double.isNaN(kmPerHour)) {
-            return Double.NaN;
-        }
-
-        return new BigDecimal(kmPerHour, MathContext.DECIMAL32)
-                .multiply(new BigDecimal(5))
-                .divide(new BigDecimal(18, MathContext.DECIMAL32), BigDecimal.ROUND_HALF_UP)
-                .intValue();
-    }
-
-    private double parseValue(String stringValue) {
+    private int parseValue(String stringValue) {
         try {
             return Integer.parseInt(stringValue);
         } catch (NumberFormatException e) {
-            return Double.NaN;
+            return -1;
         }
     }
 
