@@ -10,7 +10,7 @@
 
     <groupId>org.knowhowlab.comm</groupId>
     <artifactId>org.knowhowlab.comm.testing.rxtx</artifactId>
-    <packaging>jar</packaging>
+    <packaging>bundle</packaging>
 
     <name>KnowHowLab COMM Testing - RxTx API</name>
     <description>KnowHowLab COMM Testing - RxTx API</description>
@@ -51,4 +51,25 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Export-Package>
+                            org.knowhowlab.comm*
+                        </Export-Package>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <Embed-Dependency>*;artifactId=org.knowhowlab.comm.rxtx-patched;inline=false</Embed-Dependency>
+                        <_exportcontents>gnu.io;version="2.1.7"</_exportcontents>
+                        <Include-Resource>{RxTx-LICENSE.txt}</Include-Resource>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
