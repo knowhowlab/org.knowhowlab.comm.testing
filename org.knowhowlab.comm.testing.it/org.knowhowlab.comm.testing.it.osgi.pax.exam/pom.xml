@@ -51,8 +51,15 @@
         </dependency>
 
         <dependency>
+            <groupId>org.knowhowlab.comm</groupId>
+            <artifactId>org.knowhowlab.comm.testing.oracle</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.knowhowlab.osgi</groupId>
             <artifactId>org.knowhowlab.osgi.testing.all</artifactId>
+            <scope>test</scope>
             <exclusions>
                 <exclusion>
                     <groupId>org.osgi</groupId>

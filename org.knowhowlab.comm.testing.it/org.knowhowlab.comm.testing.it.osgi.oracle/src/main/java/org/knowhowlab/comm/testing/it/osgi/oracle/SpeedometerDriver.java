@@ -24,6 +24,8 @@ import java.util.logging.Logger;
  */
 public class SpeedometerDriver implements Monitorable {
     public static final String PRODUCE_PID = "speedometer";
+    public static final String SPEED_SV = "speed";
+    public static final String ONLINE_SV = "online";
 
     private static final Logger LOG = Logger.getLogger(SpeedometerDriver.class.getName());
 
@@ -32,7 +34,6 @@ public class SpeedometerDriver implements Monitorable {
     private static final String DATABITS_CONFIG_PROP = "databits";
     private static final String STOPBITS_CONFIG_PROP = "stopbits";
     private static final String PARITY_CONFIG_PROP = "parity";
-    public static final String SPEED_SV = "speed";
 
     private String port;
     private Integer baudrate;
@@ -44,6 +45,7 @@ public class SpeedometerDriver implements Monitorable {
     private SerialPortEventListenerImpl eventListener = new SerialPortEventListenerImpl();
 
     private volatile int speed;
+    private volatile boolean online;
 
     private ServiceRegistration serviceRegistration;
 
@@ -132,12 +134,14 @@ public class SpeedometerDriver implements Monitorable {
             serialPort.close();
             serialPort = null;
         }
+        online = false;
         LOG.info(String.format("Port %s closed", port));
     }
 
     private boolean openConnectionToDevice() {
         if (openPort() && addSerialDataListener()) {
             LOG.info(String.format("Port %s opened", port));
+            online = true;
             return true;
         } else {
             LOG.warning(String.format("Unable to set connection to port %s", port));
@@ -153,7 +157,7 @@ public class SpeedometerDriver implements Monitorable {
                 LOG.warning(String.format("%s port is not SERIAL port", port));
                 return false;
             }
-            serialPort = (SerialPort) portIdentifier.open("MIP Navman Location Provider", 2000);
+            serialPort = (SerialPort) portIdentifier.open("Speedometer", 2000);
             serialPort.setSerialPortParams(baudrate, databits, stopbits, parity);
             return true;
         } catch (PortInUseException e) {
@@ -179,13 +183,15 @@ public class SpeedometerDriver implements Monitorable {
 
     @Override
     public String[] getStatusVariableNames() {
-        return new String[] {SPEED_SV};
+        return new String[] {SPEED_SV, ONLINE_SV};
     }
 
     @Override
     public StatusVariable getStatusVariable(String s) throws IllegalArgumentException {
         if (SPEED_SV.equals(s)) {
             return new StatusVariable(SPEED_SV, StatusVariable.CM_SI, speed);
+        } else if (ONLINE_SV.equals(s)) {
+            return new StatusVariable(ONLINE_SV, StatusVariable.CM_SI, online);
         }
         throw new IllegalArgumentException(String.format("Illegal variable name %s", s));
     }
@@ -193,6 +199,8 @@ public class SpeedometerDriver implements Monitorable {
     @Override
     public boolean notifiesOnChange(String s) throws IllegalArgumentException {
         if (SPEED_SV.equals(s)) {
+            return false;
+        } else if (ONLINE_SV.equals(s)) {
             return false;
         }
         throw new IllegalArgumentException(String.format("Illegal variable name %s", s));
@@ -203,6 +211,8 @@ public class SpeedometerDriver implements Monitorable {
         if (SPEED_SV.equals(s)) {
             speed = -1;
             return true;
+        } else if (ONLINE_SV.equals(s)) {
+            return false;
         }
         throw new IllegalArgumentException(String.format("Illegal variable name %s", s));
     }
@@ -211,6 +221,8 @@ public class SpeedometerDriver implements Monitorable {
     public String getDescription(String s) throws IllegalArgumentException {
         if (SPEED_SV.equals(s)) {
             return "Speedometer value";
+        } else if (ONLINE_SV.equals(s)) {
+            return "Speedometer connected";
         }
         throw new IllegalArgumentException(String.format("Illegal variable name %s", s));
     }

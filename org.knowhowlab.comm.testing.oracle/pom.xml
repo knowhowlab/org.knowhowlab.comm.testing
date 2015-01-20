@@ -10,7 +10,7 @@
 
     <groupId>org.knowhowlab.comm</groupId>
     <artifactId>org.knowhowlab.comm.testing.oracle</artifactId>
-    <packaging>jar</packaging>
+    <packaging>bundle</packaging>
 
     <name>KnowHowLab COMM Testing - Oracle API</name>
     <description>KnowHowLab COMM Testing - Oracle API</description>
@@ -53,4 +53,28 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Import-Package>
+                            org.osg*
+                        </Import-Package>
+                        <Export-Package>
+                            org.knowhowlab.comm*,
+                            javax.comm*;specification-version="2.0.0";version="2.0.0"
+                        </Export-Package>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <Bundle-ClassPath>.,comm.jar</Bundle-ClassPath>
+                        <Include-Resource>{comm.jar}</Include-Resource>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
