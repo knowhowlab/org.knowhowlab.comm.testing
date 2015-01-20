@@ -62,16 +62,13 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Import-Package>
-                            org.osg*
-                        </Import-Package>
                         <Export-Package>
-                            org.knowhowlab.comm*,
-                            javax.comm*;specification-version="2.0.0";version="2.0.0"
+                            org.knowhowlab.comm*
                         </Export-Package>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <Bundle-ClassPath>.,comm.jar</Bundle-ClassPath>
-                        <Include-Resource>{comm.jar}</Include-Resource>
+                        <Embed-Dependency>*;artifactId=comm;inline=false</Embed-Dependency>
+                        <_exportcontents>javax.comm;specification-version="2.0.0";version="2.0.0"</_exportcontents>
+                        <Include-Resource>{COMM2.0_license.txt}</Include-Resource>
                     </instructions>
                 </configuration>
             </plugin>
