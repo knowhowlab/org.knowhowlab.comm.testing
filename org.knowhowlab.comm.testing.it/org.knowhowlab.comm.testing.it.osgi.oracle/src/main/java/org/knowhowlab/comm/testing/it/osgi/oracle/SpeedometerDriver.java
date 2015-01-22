@@ -281,7 +281,7 @@ public class SpeedometerDriver implements Monitorable {
         public void run() {
             while (!reopenPort()) {
                 try {
-                    TimeUnit.SECONDS.sleep(1);
+                    TimeUnit.MILLISECONDS.sleep(250);
                 } catch (InterruptedException e) {
                     break;
                 }

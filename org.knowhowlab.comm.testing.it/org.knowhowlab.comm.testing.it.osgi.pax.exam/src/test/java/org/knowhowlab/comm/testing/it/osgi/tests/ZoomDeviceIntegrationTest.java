@@ -8,32 +8,20 @@ import org.knowhowlab.comm.testing.common.config.PortConfig;
 import org.knowhowlab.comm.testing.common.config.PortType;
 import org.knowhowlab.comm.testing.it.osgi.rxtx.ZoomDriver;
 import org.knowhowlab.comm.testing.it.osgi.tests.device.ZoomDevice;
-import org.knowhowlab.comm.testing.oracle.MockOracleDriver;
 import org.knowhowlab.comm.testing.rxtx.MockRxTxDriver;
-import org.knowhowlab.osgi.testing.utils.ServiceUtils;
 import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
 import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.service.monitor.MonitorAdmin;
-import org.osgi.service.monitor.Monitorable;
 
-import javax.comm.CommPort;
-import javax.comm.CommPortIdentifier;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 import static org.knowhowlab.osgi.testing.assertions.ServiceAssert.assertServiceAvailable;
-import static org.knowhowlab.osgi.testing.utils.FilterUtils.*;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import static org.osgi.framework.Constants.SERVICE_PID;
 
 /**
  * @author dpishchukhin

@@ -2,13 +2,9 @@ package org.knowhowlab.comm.testing.it.osgi.rxtx.impl;
 
 import gnu.io.*;
 import org.knowhowlab.comm.testing.it.osgi.rxtx.ZoomDriver;
-import org.osgi.framework.Constants;
 import org.osgi.service.component.ComponentContext;
-import org.osgi.service.monitor.Monitorable;
 
 import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
