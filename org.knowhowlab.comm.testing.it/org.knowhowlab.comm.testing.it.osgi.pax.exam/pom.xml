@@ -49,10 +49,27 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/../../libs/comm.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>org.knowhowlab.comm</groupId>
+            <artifactId>org.knowhowlab.comm.rxtx-patched</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.knowhowlab.comm</groupId>
             <artifactId>org.knowhowlab.comm.testing.oracle</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.knowhowlab.comm</groupId>
+            <artifactId>org.knowhowlab.comm.testing.rxtx</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.knowhowlab.comm</groupId>
+            <artifactId>org.knowhowlab.comm.testing.it.osgi.rxtx</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

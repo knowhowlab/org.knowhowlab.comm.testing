@@ -38,6 +38,7 @@
         <module>org.knowhowlab.comm.testing.it.standalone.oracle</module>
         <module>org.knowhowlab.comm.testing.it.standalone.rxtx</module>
         <module>org.knowhowlab.comm.testing.it.osgi.oracle</module>
+        <module>org.knowhowlab.comm.testing.it.osgi.rxtx</module>
         <module>org.knowhowlab.comm.testing.it.osgi.pax.exam</module>
     </modules>
 </project>

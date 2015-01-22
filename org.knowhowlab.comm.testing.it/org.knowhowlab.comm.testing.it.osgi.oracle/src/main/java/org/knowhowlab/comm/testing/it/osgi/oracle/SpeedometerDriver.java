@@ -23,11 +23,11 @@ import java.util.logging.Logger;
  * @author dpishchukhin
  */
 public class SpeedometerDriver implements Monitorable {
+    private static final Logger LOG = Logger.getLogger(SpeedometerDriver.class.getName());
+
     public static final String PRODUCE_PID = "speedometer";
     public static final String SPEED_SV = "speed";
     public static final String ONLINE_SV = "online";
-
-    private static final Logger LOG = Logger.getLogger(SpeedometerDriver.class.getName());
 
     private static final String PORT_CONFIG_PROP = "port";
     private static final String BAUDRATE_CONFIG_PROP = "baudrate";

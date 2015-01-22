@@ -6,7 +6,10 @@ import org.junit.Test;
 import org.knowhowlab.comm.testing.common.config.DriverConfig;
 import org.knowhowlab.comm.testing.common.config.PortConfig;
 import org.knowhowlab.comm.testing.common.config.PortType;
+import org.knowhowlab.comm.testing.it.osgi.rxtx.ZoomDriver;
+import org.knowhowlab.comm.testing.it.osgi.tests.device.ZoomDevice;
 import org.knowhowlab.comm.testing.oracle.MockOracleDriver;
+import org.knowhowlab.comm.testing.rxtx.MockRxTxDriver;
 import org.knowhowlab.osgi.testing.utils.ServiceUtils;
 import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
@@ -16,8 +19,6 @@ import org.osgi.service.monitor.Monitorable;
 
 import javax.comm.CommPort;
 import javax.comm.CommPortIdentifier;
-import javax.comm.NoSuchPortException;
-import javax.comm.PortInUseException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -37,17 +38,21 @@ import static org.osgi.framework.Constants.SERVICE_PID;
 /**
  * @author dpishchukhin
  */
-public class SpeedometerIntegrationTest extends AbstractTest {
-    private static MockOracleDriver driver;
+public class ZoomDeviceIntegrationTest extends AbstractTest {
+    private static MockRxTxDriver driver;
+    private static ZoomDevice zoomDevice;
 
     @BeforeClass
     public static void initComm() throws IOException {
-        driver = new MockOracleDriver(createConfig());
+        driver = new MockRxTxDriver(createConfig());
         driver.initialize();
+        zoomDevice = new ZoomDevice("COM2", 0, 20, 2);
+        zoomDevice.start();
     }
 
     @After
     public void after() throws IOException {
+        zoomDevice.stop();
         driver.reset();
     }
 
@@ -63,44 +68,16 @@ public class SpeedometerIntegrationTest extends AbstractTest {
     @Configuration
     public static Option[] customTestConfiguration() {
         Option[] options = options(
-                mavenBundle().groupId("org.knowhowlab.osgi").artifactId("monitoradmin").version("1.0.2"),
                 mavenBundle().groupId("org.apache.felix").artifactId("org.apache.felix.scr").version("1.8.2"),
-                mavenBundle().groupId("org.knowhowlab.comm").artifactId("org.knowhowlab.comm.testing.oracle").version(System.getProperty("project.version")),
-                mavenBundle().groupId("org.knowhowlab.comm").artifactId("org.knowhowlab.comm.testing.it.osgi.oracle").version(System.getProperty("project.version"))
+                mavenBundle().groupId("org.knowhowlab.comm").artifactId("org.knowhowlab.comm.testing.rxtx").version(System.getProperty("project.version")),
+                mavenBundle().groupId("org.knowhowlab.comm").artifactId("org.knowhowlab.comm.testing.it.osgi.rxtx").version(System.getProperty("project.version"))
         );
         return combine(options, baseConfiguration());
     }
 
     @Test
     public void testAllServices() throws InvalidSyntaxException, InterruptedException {
-        // assert MonitorAdmin service is available in OSGi registry
-        assertServiceAvailable(MonitorAdmin.class, 5, SECONDS);
-        // assert Monitorable service is available in OSGi registry
-        assertServiceAvailable(and(create(Monitorable.class), eq(SERVICE_PID, "speedometer")), 5, SECONDS);
-    }
-
-    @Test
-    public void testDataTransfer() throws Exception {
-        Monitorable speedometer = ServiceUtils.getService(bc, Monitorable.class, eq(SERVICE_PID, "speedometer"));
-        // driver is offline
-        assertThat(speedometer.getStatusVariable("online").getBoolean(), is(false));
-
-        // wait for connection
-        TimeUnit.SECONDS.sleep(2);
-
-        // driver is online
-        assertThat(speedometer.getStatusVariable("online").getBoolean(), is(true));
-
-        // connect test device
-        CommPortIdentifier com2Id = CommPortIdentifier.getPortIdentifier("COM2");
-        CommPort com2 = com2Id.open("TestDevice", 2000);
-
-        // provide speed = 100
-        com2.getOutputStream().write("100\n".getBytes(Charset.defaultCharset()));
-        assertThat(speedometer.getStatusVariable("speed").getInteger(), is(100));
-
-        // provide speed = 150
-        com2.getOutputStream().write("150\n".getBytes(Charset.defaultCharset()));
-        assertThat(speedometer.getStatusVariable("speed").getInteger(), is(150));
+        // assert ZoomDriver service is available in OSGi registry
+        assertServiceAvailable(ZoomDriver.class, 5, SECONDS);
     }
 }

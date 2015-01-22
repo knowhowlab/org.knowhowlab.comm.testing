@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0">
+    <scr:component enabled="true" immediate="true" configuration-policy="optional" modified="modified"
+                   name="org.knowhowlab.comm.testing.it.osgi.rxtx.zoom.component">
+        <implementation class="org.knowhowlab.comm.testing.it.osgi.rxtx.impl.ZoomDriverComponent"/>
+
+        <service servicefactory="false">
+            <provide interface="org.knowhowlab.comm.testing.it.osgi.rxtx.ZoomDriver"/>
+        </service>
+
+        <property name="port" type="String" value="COM1"/>
+        <property name="baudrate" type="Integer" value="9600"/>
+        <property name="databits" type="Integer" value="8"/>
+        <property name="stopbits" type="Integer" value="1"/>
+        <property name="parity" type="Integer" value="0"/>
+    </scr:component>
+</components>
