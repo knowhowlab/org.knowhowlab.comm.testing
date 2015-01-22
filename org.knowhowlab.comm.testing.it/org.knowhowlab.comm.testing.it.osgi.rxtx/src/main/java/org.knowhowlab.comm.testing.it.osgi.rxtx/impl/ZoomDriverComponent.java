@@ -4,6 +4,8 @@ import gnu.io.*;
 import org.knowhowlab.comm.testing.it.osgi.rxtx.ZoomDriver;
 import org.osgi.service.component.ComponentContext;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Dictionary;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,6 +15,13 @@ import java.util.logging.Logger;
  */
 public class ZoomDriverComponent implements ZoomDriver {
     private static final Logger LOG = Logger.getLogger(ZoomDriver.class.getName());
+
+    private static final String GET_COMMAND = "GET";
+    private static final String ZOOMIN_COMMAND = "ZOOMIN";
+    private static final String ZOOMOUT_COMMAND = "ZOOMOUT";
+    private static final String RESET_COMMAND = "RESET";
+    private static final String OK_ANSWER = "OK";
+    private static final String ERROR_ANSWER = "ERROR";
 
     private static final String PORT_CONFIG_PROP = "port";
     private static final String BAUDRATE_CONFIG_PROP = "baudrate";
@@ -30,6 +39,8 @@ public class ZoomDriverComponent implements ZoomDriver {
 
     protected void activate(ComponentContext context) {
         readConfig(context.getProperties());
+
+        openConnectionToDevice();
 
         LOG.info("Activated");
     }
@@ -135,25 +146,46 @@ public class ZoomDriverComponent implements ZoomDriver {
 
     @Override
     public boolean zoomIn() {
-        // todo:
-        return false;
+        if (!isPortOpened()) {
+            openPort();
+        }
+        return OK_ANSWER.equals(sendCommand(ZOOMIN_COMMAND));
     }
 
     @Override
     public boolean zoomOut() {
-        // todo:
-        return false;
+        if (!isPortOpened()) {
+            openPort();
+        }
+        return OK_ANSWER.equals(sendCommand(ZOOMOUT_COMMAND));
     }
 
     @Override
     public boolean reset() {
-        // todo:
-        return false;
+        if (!isPortOpened()) {
+            openPort();
+        }
+        return OK_ANSWER.equals(sendCommand(RESET_COMMAND));
     }
 
     @Override
     public int getZoom() {
-        // todo:
-        return 0;
+        reopenPort();
+        return Integer.parseInt(sendCommand(GET_COMMAND));
+    }
+
+    private String sendCommand(String command) {
+        try {
+            LOG.info("Command: " + command);
+            serialPort.getOutputStream().write((command + "\n").getBytes(Charset.defaultCharset()));
+            byte[] buff = new byte[16];
+            int read = serialPort.getInputStream().read(buff);
+            String response = new String(buff, 0, read - 1);
+            LOG.info("Response: " + response);
+            return response; // w/o \n
+        } catch (IOException e) {
+            LOG.log(Level.WARNING, "IOException", e);
+            throw new RuntimeException("IOException", e);
+        }
     }
 }

@@ -160,6 +160,7 @@ public class ZoomDevice {
     }
 
     private void handleCommand(String command) throws IOException {
+        LOG.info("Command: " + command);
         if (GET_COMMAND.equals(command)) {
             sendAnswer(value);
         } else if (ZOOMIN_COMMAND.equals(command)) {
@@ -170,7 +171,7 @@ public class ZoomDevice {
                 sendAnswer(OK_ANSWER);
             }
         } else if (ZOOMOUT_COMMAND.equals(command)) {
-            if (value - step > minValue) {
+            if (value - step < minValue) {
                 sendAnswer(ERROR_ANSWER);
             } else {
                 value = value - step;
@@ -185,6 +186,7 @@ public class ZoomDevice {
     }
 
     private void sendAnswer(Object value) throws IOException {
+        LOG.info("Answer: " + value);
         serialPort.getOutputStream().write((value.toString() + "\n").getBytes(Charset.defaultCharset()));
     }
 

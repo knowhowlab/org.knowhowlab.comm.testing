@@ -9,6 +9,7 @@ import org.knowhowlab.comm.testing.common.config.PortType;
 import org.knowhowlab.comm.testing.it.osgi.rxtx.ZoomDriver;
 import org.knowhowlab.comm.testing.it.osgi.tests.device.ZoomDevice;
 import org.knowhowlab.comm.testing.rxtx.MockRxTxDriver;
+import org.knowhowlab.osgi.testing.utils.ServiceUtils;
 import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
 import org.osgi.framework.InvalidSyntaxException;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.knowhowlab.osgi.testing.assertions.ServiceAssert.assertServiceAvailable;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
@@ -67,5 +70,30 @@ public class ZoomDeviceIntegrationTest extends AbstractTest {
     public void testAllServices() throws InvalidSyntaxException, InterruptedException {
         // assert ZoomDriver service is available in OSGi registry
         assertServiceAvailable(ZoomDriver.class, 5, SECONDS);
+    }
+
+    @Test
+    public void testFunctionality() throws InvalidSyntaxException, InterruptedException {
+        ZoomDriver zoomDriver = ServiceUtils.getService(bc, ZoomDriver.class, 5, SECONDS);
+
+        // get value
+        assertThat(zoomDriver.getZoom(), is(0));
+
+        // zoom in
+        assertThat(zoomDriver.zoomIn(), is(true));
+        assertThat(zoomDriver.getZoom(), is(2));
+        assertThat(zoomDriver.zoomIn(), is(true));
+        assertThat(zoomDriver.getZoom(), is(4));
+
+        // zoom out
+        assertThat(zoomDriver.zoomOut(), is(true));
+        assertThat(zoomDriver.getZoom(), is(2));
+
+        // reset
+        assertThat(zoomDriver.reset(), is(true));
+        assertThat(zoomDriver.getZoom(), is(0));
+
+        // out of margin
+        assertThat(zoomDriver.zoomOut(), is(false));
     }
 }
