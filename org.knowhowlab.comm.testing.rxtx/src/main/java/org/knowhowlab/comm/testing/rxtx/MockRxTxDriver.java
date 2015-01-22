@@ -27,6 +27,7 @@ import org.knowhowlab.comm.testing.common.config.PortType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -64,11 +65,12 @@ public class MockRxTxDriver implements CommDriver {
                                 break;
                         }
                         CommPortIdentifier.addPortName(port.getName(), port.getType().getCode(), this);
+                        LOG.info("Port is initialized: " + port.getName());
                     }
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.log(Level.WARNING, "Initialization problem", e);
         }
     }
 

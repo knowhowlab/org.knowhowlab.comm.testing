@@ -25,11 +25,14 @@ import org.knowhowlab.comm.testing.common.Linkable;
 
 import java.io.*;
 import java.util.TooManyListenersException;
+import java.util.logging.Logger;
 
 /**
  * @author dpishchukhin
  */
 public class MockRxTxSerialPort extends SerialPort implements Linkable, DataListener {
+    private static final Logger LOG = Logger.getLogger(MockRxTxSerialPort.class.getName());
+
     private SerialPortEventListener listener;
     private boolean notifyOnDataAvailable = false;
     private PipedInputStream inputStream;
@@ -276,6 +279,7 @@ public class MockRxTxSerialPort extends SerialPort implements Linkable, DataList
     public void reset() throws IOException {
         ((MockRxTxSerialPort)linkTo).resetInternal();
         linkTo.linkTo(this);
+        LOG.info("Port is reset: " + getName());
     }
 
     private void resetInternal() throws IOException {

@@ -25,11 +25,14 @@ import javax.comm.SerialPortEventListener;
 import javax.comm.UnsupportedCommOperationException;
 import java.io.*;
 import java.util.TooManyListenersException;
+import java.util.logging.Logger;
 
 /**
  * @author dpishchukhin
  */
 public class MockOracleSerialPort extends SerialPort implements Linkable, DataListener {
+    private static final Logger LOG = Logger.getLogger(MockOracleSerialPort.class.getName());
+
     private SerialPortEventListener listener;
     private boolean notifyOnDataAvailable = false;
     private PipedInputStream inputStream;
@@ -206,6 +209,7 @@ public class MockOracleSerialPort extends SerialPort implements Linkable, DataLi
     public void reset() throws IOException {
         ((MockOracleSerialPort)linkTo).resetInternal();
         linkTo.linkTo(this);
+        LOG.info("Port is reset: " + getName());
     }
 
     private void resetInternal() throws IOException {
