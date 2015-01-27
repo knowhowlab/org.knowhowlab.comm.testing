@@ -65,7 +65,7 @@
                         </Export-Package>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Embed-Dependency>*;artifactId=org.knowhowlab.comm.rxtx-patched;inline=false</Embed-Dependency>
-                        <_exportcontents>gnu.io;version="2.1.7"</_exportcontents>
+                        <_exportcontents>gnu.io;version="2.1.7.r2"</_exportcontents>
                         <Include-Resource>{RxTx-LICENSE.txt}</Include-Resource>
                     </instructions>
                 </configuration>

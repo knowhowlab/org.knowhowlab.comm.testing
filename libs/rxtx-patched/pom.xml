@@ -27,7 +27,6 @@
 
     <groupId>org.knowhowlab.comm</groupId>
     <artifactId>org.knowhowlab.comm.rxtx-patched</artifactId>
-    <version>2.1-7r2</version>
     <packaging>jar</packaging>
 
     <name>KnowHowLab COMM - RxTx Patched</name>
