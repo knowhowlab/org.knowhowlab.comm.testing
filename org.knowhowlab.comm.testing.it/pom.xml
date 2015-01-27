@@ -41,4 +41,15 @@
         <module>org.knowhowlab.comm.testing.it.osgi.rxtx</module>
         <module>org.knowhowlab.comm.testing.it.osgi.pax.exam</module>
     </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <failOnError>false</failOnError>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
