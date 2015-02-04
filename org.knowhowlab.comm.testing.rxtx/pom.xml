@@ -61,9 +61,9 @@
                 <configuration>
                     <instructions>
                         <Export-Package>
-                            org.knowhowlab.comm*,
-                            gnu.io
+                            org.knowhowlab.comm*
                         </Export-Package>
+                        <Import-Package>gnu.io</Import-Package>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                     </instructions>
                 </configuration>

@@ -67,9 +67,9 @@
                 <configuration>
                     <instructions>
                         <Export-Package>
-                            org.knowhowlab.comm*,
-                            javax.comm;specification-version="2.0.0";version="2.0.0"
+                            org.knowhowlab.comm*
                         </Export-Package>
+                        <Import-Package>javax.comm;specification-version="2.0.0";version="2.0.0"</Import-Package>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                     </instructions>
                 </configuration>
