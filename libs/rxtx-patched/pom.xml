@@ -27,7 +27,7 @@
 
     <groupId>org.knowhowlab.comm</groupId>
     <artifactId>org.knowhowlab.comm.rxtx-patched</artifactId>
-    <packaging>jar</packaging>
+    <packaging>bundle</packaging>
 
     <name>KnowHowLab COMM - RxTx Patched</name>
     <description>KnowHowLab COMM - RxTx Patched.
@@ -52,4 +52,23 @@
             <url>http://www.apache.org/licenses/LICENSE-2.0</url>
         </license>
     </licenses>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Export-Package>
+                            gnu.io;version="2.1.7.r2"
+                        </Export-Package>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <Include-Resource>{RxTx-LICENSE.txt}</Include-Resource>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -53,6 +53,7 @@
 
 
     <modules>
+        <module>libs/comm-api</module>
         <module>libs/rxtx-patched</module>
         <module>org.knowhowlab.comm.testing.common</module>
         <module>org.knowhowlab.comm.testing.oracle</module>
@@ -81,6 +82,11 @@
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest-core</artifactId>
                 <version>1.3</version>
+            </dependency>
+            <dependency>
+                <groupId>org.knowhowlab.comm</groupId>
+                <artifactId>org.knowhowlab.comm.comm-api</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.knowhowlab.comm</groupId>

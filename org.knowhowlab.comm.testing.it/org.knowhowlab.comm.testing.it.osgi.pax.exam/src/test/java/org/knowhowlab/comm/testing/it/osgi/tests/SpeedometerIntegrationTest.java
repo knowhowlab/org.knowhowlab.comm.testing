@@ -32,8 +32,6 @@ import org.osgi.service.monitor.Monitorable;
 
 import javax.comm.CommPort;
 import javax.comm.CommPortIdentifier;
-import javax.comm.NoSuchPortException;
-import javax.comm.PortInUseException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -81,6 +79,7 @@ public class SpeedometerIntegrationTest extends AbstractTest {
         Option[] options = options(
                 mavenBundle().groupId("org.knowhowlab.osgi").artifactId("monitoradmin").version("1.0.2"),
                 mavenBundle().groupId("org.apache.felix").artifactId("org.apache.felix.scr").version("1.8.2"),
+                mavenBundle().groupId("org.knowhowlab.comm").artifactId("org.knowhowlab.comm.comm-api").version(System.getProperty("project.version")),
                 mavenBundle().groupId("org.knowhowlab.comm").artifactId("org.knowhowlab.comm.testing.oracle").version(System.getProperty("project.version")),
                 mavenBundle().groupId("org.knowhowlab.comm").artifactId("org.knowhowlab.comm.testing.it.osgi.oracle").version(System.getProperty("project.version"))
         );

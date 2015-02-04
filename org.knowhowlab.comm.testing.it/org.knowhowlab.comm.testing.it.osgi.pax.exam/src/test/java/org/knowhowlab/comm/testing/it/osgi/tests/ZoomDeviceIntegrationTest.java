@@ -76,6 +76,7 @@ public class ZoomDeviceIntegrationTest extends AbstractTest {
     public static Option[] customTestConfiguration() {
         Option[] options = options(
                 mavenBundle().groupId("org.apache.felix").artifactId("org.apache.felix.scr").version("1.8.2"),
+                mavenBundle().groupId("org.knowhowlab.comm").artifactId("org.knowhowlab.comm.rxtx-patched").version(System.getProperty("project.version")),
                 mavenBundle().groupId("org.knowhowlab.comm").artifactId("org.knowhowlab.comm.testing.rxtx").version(System.getProperty("project.version")),
                 mavenBundle().groupId("org.knowhowlab.comm").artifactId("org.knowhowlab.comm.testing.it.osgi.rxtx").version(System.getProperty("project.version"))
         );
