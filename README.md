@@ -19,16 +19,26 @@ Oracle javax.comm API
 
     <dependency>
         <groupId>org.knowhowlab.comm</groupId>
+        <artifactId>org.knowhowlab.comm.comm-api</artifactId>
+        <version>0.2</version>
+    </dependency>
+    <dependency>
+        <groupId>org.knowhowlab.comm</groupId>
         <artifactId>org.knowhowlab.comm.testing.oracle</artifactId>
-        <version>0.1</version>
+        <version>0.2</version>
     </dependency>
 
 RxTx gnu.io API
 
     <dependency>
         <groupId>org.knowhowlab.comm</groupId>
+        <artifactId>org.knowhowlab.comm.rxtx-patched</artifactId>
+        <version>0.2</version>
+    </dependency>
+    <dependency>
+        <groupId>org.knowhowlab.comm</groupId>
         <artifactId>org.knowhowlab.comm.testing.rxtx</artifactId>
-        <version>0.1</version>
+        <version>0.2</version>
     </dependency>
 
 ## OSGi sample
@@ -61,6 +71,7 @@ RxTx gnu.io API
             Option[] options = options(
                     mavenBundle().groupId("org.knowhowlab.osgi").artifactId("monitoradmin").version("1.0.2"),
                     mavenBundle().groupId("org.apache.felix").artifactId("org.apache.felix.scr").version("1.8.2"),
+                    mavenBundle().groupId("org.knowhowlab.comm").artifactId("org.knowhowlab.comm.comm-api").version(System.getProperty("project.version")),
                     mavenBundle().groupId("org.knowhowlab.comm").artifactId("org.knowhowlab.comm.testing.oracle").version(System.getProperty("project.version")),
                     mavenBundle().groupId("org.knowhowlab.comm").artifactId("org.knowhowlab.comm.testing.it.osgi.oracle").version(System.getProperty("project.version"))
             );
