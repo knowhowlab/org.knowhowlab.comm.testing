@@ -17,6 +17,7 @@ for Unit and Integration testing (Java standalone and OSGi applications)
 
 Oracle javax.comm API
 
+```xml
     <dependency>
         <groupId>org.knowhowlab.comm</groupId>
         <artifactId>org.knowhowlab.comm.comm-api</artifactId>
@@ -27,9 +28,11 @@ Oracle javax.comm API
         <artifactId>org.knowhowlab.comm.testing.oracle</artifactId>
         <version>0.2</version>
     </dependency>
+```
 
 RxTx gnu.io API
 
+```xml
     <dependency>
         <groupId>org.knowhowlab.comm</groupId>
         <artifactId>org.knowhowlab.comm.rxtx-patched</artifactId>
@@ -40,9 +43,11 @@ RxTx gnu.io API
         <artifactId>org.knowhowlab.comm.testing.rxtx</artifactId>
         <version>0.2</version>
     </dependency>
+```
 
 ## OSGi sample
 
+```java
     public class SpeedometerIntegrationTest extends AbstractTest {
         private static MockOracleDriver driver;
 
@@ -103,10 +108,11 @@ RxTx gnu.io API
             assertThat(speedometer.getStatusVariable("speed").getInteger(), is(150));
         }
     }
-
+```
 
 ## Standalone sample
 
+```java
     public class GrootTest {
         private static MockOracleDriver driver;
 
@@ -150,6 +156,7 @@ RxTx gnu.io API
             groot.stop();
         }
     }
+```
 
 ## FAQ
 
